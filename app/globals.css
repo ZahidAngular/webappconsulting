@@ -1,0 +1,291 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Dark mode is driven by a `.dark` class on <html>                   */
+/* ------------------------------------------------------------------ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ */
+/*  Brand + semantic tokens                                            */
+/*  Logo palette: cyan/sky-blue "Web/Consulting" + orange "App"        */
+/* ------------------------------------------------------------------ */
+:root {
+  /* fixed brand colours */
+  --brand: #1ba7da;
+  --brand-bright: #2bb7e4;
+  --brand-light: #6fd6f2;
+  --brand-deep: #0f7fb0;
+  --accent: #f7941d;
+  --accent-bright: #ffa92e;
+  --accent-deep: #e07d05;
+
+  /* LIGHT THEME (default) */
+  --bg: #f4f8fb;
+  --bg-2: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #eef4f9;
+  --border: #d9e6ef;
+  --border-strong: #c2d6e3;
+  --text: #0a1622;
+  --text-2: #3c5161;
+  --text-3: #6c8295;
+  --glow: rgba(27, 167, 218, 0.16);
+  --grid-line: rgba(13, 84, 122, 0.06);
+  --shadow: 0 24px 60px -28px rgba(15, 60, 90, 0.32);
+  color-scheme: light;
+}
+
+.dark {
+  /* DARK THEME */
+  --bg: #050a14;
+  --bg-2: #070d1a;
+  --surface: #0b1424;
+  --surface-2: #101c30;
+  --border: rgba(120, 170, 210, 0.12);
+  --border-strong: rgba(120, 170, 210, 0.22);
+  --text: #eaf4fb;
+  --text-2: #a7c0d4;
+  --text-3: #6f8aa3;
+  --glow: rgba(43, 183, 228, 0.22);
+  --grid-line: rgba(120, 190, 230, 0.05);
+  --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.75);
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Map tokens into Tailwind's theme so `bg-bg`, `text-brand` work     */
+/* ------------------------------------------------------------------ */
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-bright: var(--brand-bright);
+  --color-brand-light: var(--brand-light);
+  --color-brand-deep: var(--brand-deep);
+  --color-accent: var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-accent-deep: var(--accent-deep);
+
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border-soft: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), var(--font-jakarta), sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+
+  --radius-xl2: 1.75rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: auto; /* lenis handles smoothing */
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+::selection {
+  background: var(--brand-bright);
+  color: #03121c;
+}
+
+/* nice themed scrollbar */
+::-webkit-scrollbar {
+  width: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-2);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--brand), var(--brand-deep));
+  border-radius: 99px;
+  border: 3px solid var(--bg-2);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                          */
+/* ------------------------------------------------------------------ */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* editorial serif-italic accent for highlighted words (award-site signature) */
+.serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  background: linear-gradient(100deg, var(--brand-light), var(--brand-bright) 55%, var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.serif-plain {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--brand-light), var(--brand-bright) 45%, var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(100deg, var(--brand-light), var(--brand-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* clean, bright hero headline gradient — no muddy mid-tones */
+.text-gradient-hero {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--text) 92%, white),
+    var(--brand-light) 78%,
+    var(--brand-bright)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* glassy card */
+.glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--border);
+}
+
+/* subtle dotted/grid background */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.bg-dots {
+  background-image: radial-gradient(var(--grid-line) 1.4px, transparent 1.4px);
+  background-size: 26px 26px;
+}
+
+/* radial brand glow */
+.glow-brand {
+  box-shadow: 0 0 0 1px var(--border), 0 20px 50px -22px var(--glow);
+}
+
+/* cursor-following spotlight on premium cards */
+.spotlight {
+  position: relative;
+}
+.spotlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--brand-bright) 16%, transparent),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.spotlight:hover::after {
+  opacity: 1;
+}
+
+/* animated conic border for feature cards */
+.shine-border {
+  position: relative;
+  isolation: isolate;
+}
+.shine-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(130deg, var(--brand-bright), transparent 40%, transparent 60%, var(--accent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+.shine-border:hover::before {
+  opacity: 1;
+}
+
+/* marquee */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-x var(--marquee-duration, 32s) linear infinite;
+}
+.marquee-pause:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* slow float */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.animate-floaty {
+  animation: floaty 7s ease-in-out infinite;
+}
+
+/* aurora blob drift */
+@keyframes aurora {
+  0%, 100% { transform: translate3d(0,0,0) scale(1); }
+  33% { transform: translate3d(6%, -4%, 0) scale(1.12); }
+  66% { transform: translate3d(-5%, 5%, 0) scale(0.94); }
+}
+.animate-aurora {
+  animation: aurora 18s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-floaty,
+  .animate-aurora {
+    animation: none;
+  }
+}
+
+/* hide native cursor when custom cursor active (desktop fine-pointer only) */
+@media (pointer: fine) {
+  .cursor-none-fine,
+  .cursor-none-fine * {
+    cursor: none;
+  }
+}
